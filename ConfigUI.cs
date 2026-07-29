@@ -19,7 +19,7 @@ namespace NoClippy
 
             //ImGui.SetNextWindowSizeConstraints(new Vector2(400, 200) * ImGuiHelpers.GlobalScale, new Vector2(10000));
             ImGui.SetNextWindowSize(new Vector2(400, 0) * ImGuiHelpers.GlobalScale);
-            ImGui.Begin("NoClippy Configuration", ref isVisible, ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse);
+            ImGui.Begin("NoClippy 設定", ref isVisible, ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse);
             AddDonationHeader(1);
             Modules.Modules.Draw();
             ImGui.End();
@@ -80,7 +80,7 @@ namespace NoClippy
 
         private static void AddDonationHeader(int position)
         {
-            if (!AddHeaderIcon("_Donate", FontAwesomeIcon.Heart, new HeaderIconOptions { Position = position, Color = 0xFF3030D0, MouseButton = ImGuiMouseButton.Right, Tooltip = "Right click to open the donation page.", ToastTooltipOnClick = true })) return;
+            if (!AddHeaderIcon("_Donate", FontAwesomeIcon.Heart, new HeaderIconOptions { Position = position, Color = 0xFF3030D0, MouseButton = ImGuiMouseButton.Right, Tooltip = "按右鍵開啟贊助頁面。", ToastTooltipOnClick = true })) return;
             StartProcess(@"https://ko-fi.com/unknownx7");
         }
 

@@ -96,17 +96,17 @@ namespace NoClippy.Modules
         {
             ImGui.Columns(2, "EncounterColumns", false);
 
-            if (ImGui.Checkbox("Enable Encounter Stats", ref NoClippy.Config.EnableEncounterStats))
+            if (ImGui.Checkbox("啟用戰鬥統計", ref NoClippy.Config.EnableEncounterStats))
                 NoClippy.Config.Save();
-            PluginUI.SetItemTooltip("Tracks clips and wasted GCD time while in combat, and logs the total afterwards.");
+            PluginUI.SetItemTooltip("追蹤戰鬥中的技能卡頓與浪費的 GCD 時間，並在戰鬥後記錄總計。");
 
             ImGui.NextColumn();
 
             if (NoClippy.Config.EnableEncounterStats)
             {
-                if (ImGui.Checkbox("Enable Stats Logging", ref NoClippy.Config.EnableEncounterStatsLogging))
+                if (ImGui.Checkbox("啟用統計記錄", ref NoClippy.Config.EnableEncounterStatsLogging))
                     NoClippy.Config.Save();
-                PluginUI.SetItemTooltip("Logs individual encounter clips and wasted GCD time.");
+                PluginUI.SetItemTooltip("記錄每場戰鬥的技能卡頓與浪費的 GCD 時間。");
             }
 
             ImGui.Columns(1);

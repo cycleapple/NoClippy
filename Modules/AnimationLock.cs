@@ -221,33 +221,33 @@ namespace NoClippy.Modules
 
         public override void DrawConfig()
         {
-            if (ImGui.Checkbox("Enable Animation Lock Reduction", ref Config.EnableAnimLockComp))
+            if (ImGui.Checkbox("啟用技能後搖縮減", ref Config.EnableAnimLockComp))
                 Config.Save();
-            PluginUI.SetItemTooltip("Modifies the way the game handles animation lock," +
-                "\ncausing it to simulate 10 ms ping.");
+            PluginUI.SetItemTooltip("調整遊戲處理技能後搖的方式，" +
+                "\n模擬 10 ms 延遲。");
 
             if (Config.EnableAnimLockComp)
             {
                 ImGui.Columns(2, "AnimlockColumns", false);
 
-                if (ImGui.Checkbox("Enable Logging", ref Config.EnableLogging))
+                if (ImGui.Checkbox("啟用記錄", ref Config.EnableLogging))
                     Config.Save();
 
                 ImGui.NextColumn();
 
                 var _ = IsDryRunEnabled;
-                if (ImGui.Checkbox("Dry Run", ref _))
+                if (ImGui.Checkbox("模擬執行", ref _))
                 {
                     Config.EnableDryRun = _;
                     enableAnticheat = false;
                     Config.Save();
                 }
-                PluginUI.SetItemTooltip("The plugin will still log and perform calculations, but no in-game values will be overwritten.");
+                PluginUI.SetItemTooltip("插件仍會記錄並進行計算，但不會覆寫任何遊戲內數值。");
             }
 
             ImGui.Columns(1);
 
-            ImGui.TextUnformatted($"Reduced a total time of {TimeSpan.FromSeconds(Config.TotalAnimationLockReduction):d\\:hh\\:mm\\:ss} from {Config.TotalActionsReduced} actions");
+            ImGui.TextUnformatted($"已為 {Config.TotalActionsReduced} 次技能合計縮短 {TimeSpan.FromSeconds(Config.TotalAnimationLockReduction):d\\:hh\\:mm\\:ss}");
         }
 
         public override void Enable()

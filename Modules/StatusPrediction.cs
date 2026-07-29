@@ -415,34 +415,34 @@ namespace NoClippy.Modules
         {
             var red = new Vector4(1, 0.25f, 0.25f, 1);
             ImGui.BeginGroup();
-            TextCenter(Vector4.One, "Sorry! Temporarily disabled for Dawntrail.");
-            TextCenter(red, "!!!!!USE AT OWN RISK!!!!!");
-            TextCenter(red, "Experimental prediction settings.");
+            TextCenter(Vector4.One, "很抱歉，此功能在《黃金的遺產》中暫時停用。");
+            TextCenter(red, "!!!!!使用風險請自行承擔!!!!!");
+            TextCenter(red, "實驗性預測設定。");
             ImGui.Dummy(new Vector2(1000, 8));
             ImGui.EndGroup();
             ImGui.BeginDisabled();
-            PluginUI.SetItemTooltip("This is a very early attempt at fixing a major problem with status effects and certain skills." +
-                "\nThe server should decline invalid attempts, but these settings could cause more invalid packets than usual.");
+            PluginUI.SetItemTooltip("這是嘗試修正狀態效果與部分技能重大問題的早期實驗功能。" +
+                "\n伺服器理應拒絕無效操作，但這些設定可能產生比平常更多的無效封包。");
 
             ImGui.Columns(2, "Columns", false);
 
-            if (ImGui.Checkbox("Predict Statuses", ref NoClippy.Config.PredictStatusApplications))
+            if (ImGui.Checkbox("預測狀態效果", ref NoClippy.Config.PredictStatusApplications))
                 NoClippy.Config.Save();
-            PluginUI.SetItemTooltip("Removes the effects of lag on certain statuses." +
-                "\nCurrently supported:\nSwiftcast\nTriplecast\nAcceleration\nKassatsu\nEukrasia");
+            PluginUI.SetItemTooltip("減少延遲對特定狀態效果的影響。" +
+                "\n目前支援：\n即刻詠唱\n三連詠唱\n促進\n生殺予奪\n均衡");
 
             ImGui.NextColumn();
 
-            if (ImGui.Checkbox("Predict Mudras", ref NoClippy.Config.PredictMudras))
+            if (ImGui.Checkbox("預測結印", ref NoClippy.Config.PredictMudras))
                 NoClippy.Config.Save();
-            PluginUI.SetItemTooltip("Removes the effects of lag on using Mudras and Ninjutsu.");
+            PluginUI.SetItemTooltip("減少延遲對結印與忍術的影響。");
 
             ImGui.NextColumn();
 
-            if (ImGui.Checkbox("Predict Dualcast", ref NoClippy.Config.PredictDualcast))
+            if (ImGui.Checkbox("預測連續詠唱", ref NoClippy.Config.PredictDualcast))
                 NoClippy.Config.Save();
-            PluginUI.SetItemTooltip("Mostly removes the effects of lag on dualcast." +
-                "\nWarning: Can easily desync with extremely high lag and slidecasting too early.");
+            PluginUI.SetItemTooltip("大幅減少延遲對連續詠唱的影響。" +
+                "\n警告：延遲極高或過早滑步詠唱時，很容易發生不同步。");
 
             ImGui.Columns(1);
             ImGui.EndDisabled();

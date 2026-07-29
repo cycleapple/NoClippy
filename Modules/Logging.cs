@@ -20,13 +20,13 @@ namespace NoClippy.Modules
 
         public override void DrawConfig()
         {
-            if (ImGui.Checkbox("Output to Chat Log", ref NoClippy.Config.LogToChat))
+            if (ImGui.Checkbox("輸出至聊天記錄", ref NoClippy.Config.LogToChat))
                 NoClippy.Config.Save();
-            PluginUI.SetItemTooltip("Sends logging to the chat log instead.");
+            PluginUI.SetItemTooltip("改為將記錄輸出至聊天記錄。");
 
             if (!NoClippy.Config.LogToChat) return;
 
-            if (ImGui.BeginCombo("Log Chat Type", NoClippy.Config.LogChatType.ToString()))
+            if (ImGui.BeginCombo("記錄聊天頻道", NoClippy.Config.LogChatType.ToString()))
             {
                 foreach (var chatType in Enum.GetValues<XivChatType>())
                 {
@@ -39,7 +39,7 @@ namespace NoClippy.Modules
                 ImGui.EndCombo();
             }
 
-            PluginUI.SetItemTooltip("Overrides the default Dalamud chat channel.");
+            PluginUI.SetItemTooltip("覆寫預設的 Dalamud 聊天頻道。");
         }
     }
 }

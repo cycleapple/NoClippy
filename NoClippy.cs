@@ -30,13 +30,13 @@ namespace NoClippy
             }
             catch (Exception e)
             {
-                PrintError("Failed to load!");
+                PrintError("載入失敗！");
                 DalamudApi.LogError(e.ToString());
             }
         }
 
         [Command("/noclippy")]
-        [HelpMessage("/noclippy [on|off|toggle|dry|help] - Toggles the config window if no option is specified.")]
+        [HelpMessage("/noclippy [on|off|toggle|dry|help]－未指定選項時開關設定視窗。")]
         private void OnNoClippy(string command, string argument)
         {
             switch (argument)
@@ -46,27 +46,27 @@ namespace NoClippy
                 case "t" when !Config.EnableAnimLockComp:
                     Config.EnableAnimLockComp = true;
                     Config.Save();
-                    PrintEcho("Enabled animation lock compensation!");
+                    PrintEcho("已啟用技能後搖補償！");
                     break;
                 case "off":
                 case "toggle" when Config.EnableAnimLockComp:
                 case "t" when Config.EnableAnimLockComp:
                     Config.EnableAnimLockComp = false;
                     Config.Save();
-                    PrintEcho("Disabled animation lock compensation!");
+                    PrintEcho("已停用技能後搖補償！");
                     break;
                 case "dry":
                 case "d":
-                    PrintEcho($"Dry run is now {((Config.EnableDryRun = !Config.EnableDryRun) ? "enabled" : "disabled")}.");
+                    PrintEcho($"模擬執行已{((Config.EnableDryRun = !Config.EnableDryRun) ? "啟用" : "停用")}。");
                     Config.Save();
                     break;
                 case "":
                     ConfigUI.ToggleVisible();
                     break;
                 default:
-                    PrintEcho("Invalid usage: Command must be \"/noclippy <option>\"." +
-                        "\non / off / toggle - Enables or disables animation lock compensation." +
-                        "\ndry - Toggles dry run (will not override the animation lock).");
+                    PrintEcho("用法錯誤：指令格式為「/noclippy <選項>」。" +
+                        "\non / off / toggle－啟用或停用技能後搖補償。" +
+                        "\ndry－切換模擬執行（不覆寫技能後搖）。");
                     break;
             }
         }

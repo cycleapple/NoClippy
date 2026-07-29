@@ -1,8 +1,8 @@
 ﻿{
   "Author": "UnknownX",
   "Name": "NoClippy",
-  "Punchline": "Reduces the effects of lag on certain aspects of the game, and can show GCD clips",
-  "Description": "Reduces the effects of lag on certain aspects of the game, such as weaving and statuses. Usable as an alternative, or in addition, to XivAlexander.",
+  "Punchline": "降低延遲對技能插入等操作的影響，並可顯示 GCD 卡頓。",
+  "Description": "降低延遲對技能插入與狀態效果等操作的影響，可作為 XivAlexander 的替代方案或搭配使用。",
   "IconUrl": "",
   "ImageUrls": [
     ""
@@ -14,5 +14,5 @@
   ],
   "InternalName": "NoClippy",
   "AssemblyVersion": "9.9.9.9",
-  "Changelog": "Fixed for 7.3 (Thanks to Zeffuro)"
+  "Changelog": "修正 7.3 相容性（感謝 Zeffuro）"
 }
