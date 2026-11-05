@@ -28,6 +28,9 @@ public class DalamudApi
     public static IClientState ClientState { get; private set; }
 
     [PluginService]
+    public static IObjectTable ObjectTable { get; private set; }
+
+    [PluginService]
     public static ICommandManager CommandManager { get; private set; }
 
     [PluginService]

@@ -47,7 +47,7 @@ namespace NoClippy.Modules
 
             public PredictedStatus Add(ushort statusID = 0, byte stacks = 0, byte param = 0, bool replace = false, float timer = 0.75f, Action endAction = null)
             {
-                var statusList = DalamudApi.ClientState.LocalPlayer!.StatusList;
+                var statusList = DalamudApi.ObjectTable.LocalPlayer!.StatusList;
 
                 int prev;
 
@@ -87,7 +87,7 @@ namespace NoClippy.Modules
 
             public void Update(float dt)
             {
-                var statusList = DalamudApi.ClientState.LocalPlayer?.StatusList;
+                var statusList = DalamudApi.ObjectTable.LocalPlayer?.StatusList;
                 var exists = statusList != null;
 
                 for (int i = statuses.Count - 1; i >= 0; i--)
@@ -160,14 +160,14 @@ namespace NoClippy.Modules
                 }
 
                 if (reapply)
-                    Apply(DalamudApi.ClientState.LocalPlayer!.StatusList);
+                    Apply(DalamudApi.ObjectTable.LocalPlayer!.StatusList);
             }
 
             public bool Remove(PredictedStatus status)
             {
                 var removed = statuses.Remove(status);
 
-                if (removed && DalamudApi.ClientState.LocalPlayer?.StatusList is { } statusList)
+                if (removed && DalamudApi.ObjectTable.LocalPlayer?.StatusList is { } statusList)
                 {
                     status.TryRemove(statusList);
                     status.endAction?.Invoke();
@@ -291,7 +291,7 @@ namespace NoClippy.Modules
                     status.beginAction?.Invoke();
             }
 
-            predictedStatusList.Apply(DalamudApi.ClientState.LocalPlayer!.StatusList);
+            predictedStatusList.Apply(DalamudApi.ObjectTable.LocalPlayer!.StatusList);
         }
 
         private void PredictMudras(uint actionID)
@@ -317,7 +317,7 @@ namespace NoClippy.Modules
         {
             var mudraStacks = 0;
 
-            var statusList = DalamudApi.ClientState.LocalPlayer!.StatusList;
+            var statusList = DalamudApi.ObjectTable.LocalPlayer!.StatusList;
             for (int i = 0; i < statusList.Length; i++)
             {
                 var statusPtr = (Status*)statusList.GetStatusAddress(i);
@@ -353,7 +353,7 @@ namespace NoClippy.Modules
 
         private unsafe void UpdateDualcast()
         {
-            var statusList = DalamudApi.ClientState.LocalPlayer?.StatusList;
+            var statusList = DalamudApi.ObjectTable.LocalPlayer?.StatusList;
             if (statusList == null)
             {
                 predictDualcast = false;
@@ -369,7 +369,7 @@ namespace NoClippy.Modules
 
         private unsafe void CastBegin(ulong objectID, nint packetData)
         {
-            if (!NoClippy.Config.PredictDualcast || DalamudApi.ClientState.LocalPlayer?.ClassJob.RowId != 35 || *(byte*)(packetData + 2) != 1) return;
+            if (!NoClippy.Config.PredictDualcast || DalamudApi.ObjectTable.LocalPlayer?.ClassJob.RowId != 35 || *(byte*)(packetData + 2) != 1) return;
 
             var actionID = *(ushort*)packetData;
             if (actionID < 9) return; // Special actions
@@ -415,34 +415,34 @@ namespace NoClippy.Modules
         {
             var red = new Vector4(1, 0.25f, 0.25f, 1);
             ImGui.BeginGroup();
-            TextCenter(Vector4.One, "很抱歉，此功能在《黃金的遺產》中暫時停用。");
-            TextCenter(red, "!!!!!使用風險請自行承擔!!!!!");
-            TextCenter(red, "實驗性預測設定。");
+            TextCenter(Vector4.One, "Sorry! Temporarily disabled for Dawntrail.");
+            TextCenter(red, "!!!!!USE AT OWN RISK!!!!!");
+            TextCenter(red, "Experimental prediction settings.");
             ImGui.Dummy(new Vector2(1000, 8));
             ImGui.EndGroup();
             ImGui.BeginDisabled();
-            PluginUI.SetItemTooltip("這是嘗試修正狀態效果與部分技能重大問題的早期實驗功能。" +
-                "\n伺服器理應拒絕無效操作，但這些設定可能產生比平常更多的無效封包。");
+            PluginUI.SetItemTooltip("This is a very early attempt at fixing a major problem with status effects and certain skills." +
+                "\nThe server should decline invalid attempts, but these settings could cause more invalid packets than usual.");
 
             ImGui.Columns(2, "Columns", false);
 
-            if (ImGui.Checkbox("預測狀態效果", ref NoClippy.Config.PredictStatusApplications))
+            if (ImGui.Checkbox("Predict Statuses", ref NoClippy.Config.PredictStatusApplications))
                 NoClippy.Config.Save();
-            PluginUI.SetItemTooltip("減少延遲對特定狀態效果的影響。" +
-                "\n目前支援：\n即刻詠唱\n三連詠唱\n促進\n生殺予奪\n均衡");
+            PluginUI.SetItemTooltip("Removes the effects of lag on certain statuses." +
+                "\nCurrently supported:\nSwiftcast\nTriplecast\nAcceleration\nKassatsu\nEukrasia");
 
             ImGui.NextColumn();
 
-            if (ImGui.Checkbox("預測結印", ref NoClippy.Config.PredictMudras))
+            if (ImGui.Checkbox("Predict Mudras", ref NoClippy.Config.PredictMudras))
                 NoClippy.Config.Save();
-            PluginUI.SetItemTooltip("減少延遲對結印與忍術的影響。");
+            PluginUI.SetItemTooltip("Removes the effects of lag on using Mudras and Ninjutsu.");
 
             ImGui.NextColumn();
 
-            if (ImGui.Checkbox("預測連續詠唱", ref NoClippy.Config.PredictDualcast))
+            if (ImGui.Checkbox("Predict Dualcast", ref NoClippy.Config.PredictDualcast))
                 NoClippy.Config.Save();
-            PluginUI.SetItemTooltip("大幅減少延遲對連續詠唱的影響。" +
-                "\n警告：延遲極高或過早滑步詠唱時，很容易發生不同步。");
+            PluginUI.SetItemTooltip("Mostly removes the effects of lag on dualcast." +
+                "\nWarning: Can easily desync with extremely high lag and slidecasting too early.");
 
             ImGui.Columns(1);
             ImGui.EndDisabled();
@@ -452,7 +452,6 @@ namespace NoClippy.Modules
         {
             Game.OnUseActionLocation += UseActionLocation;
             Game.OnUpdate += Update;
-            Game.OnUpdateStatusList += UpdateStatusList;
             Game.OnCastBegin += CastBegin;
             Game.OnCastInterrupt += CastInterrupt;
         }
@@ -461,7 +460,6 @@ namespace NoClippy.Modules
         {
             Game.OnUseActionLocation -= UseActionLocation;
             Game.OnUpdate -= Update;
-            Game.OnUpdateStatusList -= UpdateStatusList;
             Game.OnCastBegin -= CastBegin;
             Game.OnCastInterrupt -= CastInterrupt;
         }
